@@ -39,27 +39,27 @@ I implemented a binance client service  `internal/binance/client.go` that  conne
 
 The client extracts relevant fields such as Symbol , Price , Quantity , and Timestamp , converting them into a Tick struct. This struct is then sent to a channel ( tickChan ) for further processing.
 
-The tick bufferred channel helps handle back pressure by allowing a limited number of messages to be queued in the channel before blocking the sender. The capacity is configurable and can be adjusted based on demand. The configuaration is defined in `configs/config.yaml` file.
+The tick bufferred channel helps handle back pressure by allowing a limited number of messages to be queued in the channel before blocking the sender. The capacity is configurable and can be adjusted based on demand. The configuration is defined in `configs/config.yaml` file.
 
 `c.connectSymbol(ctx, symbol, tickChan)`
 
-The Connect method spawns a separate goroutine for each trading symbol specified in the symbols slice. This allows the client to handle multiple WebSocket connections concurrently, ensuring that data for all symbols is received in real-time. Having a shared connection pool is potentially a better approach for more real time pairs but I have limited my implementation to this defined case.
+The `connectSymbol` method spawns a separate goroutine for each trading symbol specified in the symbols slice. This allows the client to handle multiple WebSocket connections concurrently, ensuring that data for all symbols is received in real-time. Having a shared connection pool is potentially a better approach for more real time pairs but I have limited my implementation to this defined scope.
 
-The client includes error handling for connection and message reading errors. If a connection error occurs, the client logs the error and attempts to reconnect after a short delay. This ensures robustness and continuity in data streaming.
+The client handles errors for connection. If a connection error occurs, the client logs the error and attempts to reconnect after a short delay.ensuring continuity in data streaming.
 
-For sychronisation, I used sync.WaitGroup to wait for all goroutines to finish before closing the tickChan . This ensures that all data is processed before the channel is closed, preventing potential data loss.
+For sychronisation, I used `sync.WaitGroup` to wait for all goroutines to finish before closing the `tickChan` channel. This ensures that all data is processed before the channel is closed, preventing potential data loss.
 
 ###  Data Aggregation
 
-The Aggregator implementation is designed to process real-time ticks and aggregate them into candlestick data. Aggregation is performed using a time-based sliding window. Events are grouped into 1-minute windows, with metrics computed and flushed every interval. I employed the use of  `sync.RWMutex` to manage concurrent access to shared resources, specifically the candles map and lastTickTime . This ensures thread-safe operations when multiple goroutines are reading from or writing to these resources.
+The Aggregator implementation is designed to process real-time ticks and aggregate them into candlestick data. Aggregation is performed using a time-based sliding window. Events are grouped into 1-minute windows, with metrics computed and flushed every interval. I employed the use of  `sync.RWMutex` to manage concurrent access to shared resources, specifically the `candles` map and `lastTickTime` . This ensures thread-safe operations when multiple goroutines are reading from or writing to these resources.
 
-The Run method continuously listens for incoming ticks from a channel ( tickChan ). It processes each tick to update or create candlestick data
+The Run method continuously listens for incoming ticks from a channel (tickChan) and processes each tick to update or create candlestick data.
 
  `agg.Run(ctx, tickChan, candleChan)`
 
-The processTick method aggregates ticks into candlesticks. It updates the open, high, low, close, and volume fields of a Candle struct based on incoming tick data. This is essential for generating candlestick charts used in technical analysis.
+The processTick method aggregates ticks into candlesticks and updates the open, high, low, close, and volume fields of a Candle struct based on incoming tick data. This is essential for generating candlestick charts used in technical analysis.
 
-I also check for candlesticks that have reached their end time and marks them as finalised. Finalised candlesticks are sent to an output channel (candleChan) and removed from the active map. This ensures that only active candlesticks are updated with new tick data. I also handle graceful shortdown to ensure that all remaining candlesticks are finalized and sent out before the service stops.
+Also I check for candlesticks that have reached their end time and marks them as finalised. Finalised candlesticks are sent to an output channel (candleChan) and removed from the active map. This ensures that only active candlesticks are updated with new tick data. I also handle graceful shortdown to ensure that all remaining candlesticks are finalized and sent out before the service stops.
 
 ### Data Streaming
 
