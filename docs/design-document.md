@@ -33,13 +33,13 @@ I opted for Timescale DB due to its specialized optimization for high-frequency 
 
 ###  Data Ingestion
 
-I implemented a binance client service  `internal/binance/client.go` that  connects to Binance WebSocket API and consume real-time market data (ticks) streams for the specified trading symbols. It maintains persistent connections for all symbols and implements exponential backoff for reconnections. The incoming payloads are validated and pushed into an internal channel for processing,  each symbol runs on it own goroutine and  uses a separate channel per symbol for aggregators to avoid contention. 
+I implemented a binance client service  `internal/binance/client.go` that  connects to Binance WebSocket API and consumes real-time market data (ticks) streams for the specified trading symbols. It maintains persistent connections for all symbols and implements exponential backoff for reconnections. The incoming payloads are validated and pushed into an internal channel for processing,  each symbol runs on it own goroutine and  uses a separate channel per symbol for aggregators to avoid contention. 
 
 `tickChan := make(chan binance.Tick, cfg.Buffers.TickChan)`
 
 The client extracts relevant fields such as Symbol , Price , Quantity , and Timestamp , converting them into a Tick struct. This struct is then sent to a channel ( tickChan ) for further processing.
 
-The tick bufferred channel helps handle back pressure by allowing a limited number of messages to be queued in the channel before blocking the sender. The capacity is is configurable and can be adjusted based on demand The configuaration ins defined in `configs/config.yaml` file.
+The tick bufferred channel helps handle back pressure by allowing a limited number of messages to be queued in the channel before blocking the sender. The capacity is configurable and can be adjusted based on demand. The configuaration is defined in `configs/config.yaml` file.
 
 `c.connectSymbol(ctx, symbol, tickChan)`
 
