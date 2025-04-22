@@ -191,4 +191,4 @@ Given the limited time constraints and requirements, this is my approach and act
 
 While this is fine for a start, to scale in production, I will consider the following improvements: multiple replicas for high availability, resource limits and requests, horizontal pod autoscaling, network policies for enhanced security and secrets for sensitive configuration
 
-Furthermore, I will add support for Prometheus metrics and Grafana dashboards. Switch to eevt driven architecture using Kafka  and Kafka streaming for ingestion to support high-throughput data pipelines.
+Furthermore, I will add support for Prometheus metrics and Grafana dashboards. Switch to event driven architecture using Kafka  and Kafka streaming for ingestion to support high-throughput data pipelines.
