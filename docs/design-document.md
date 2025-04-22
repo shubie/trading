@@ -57,19 +57,19 @@ The Run method continuously listens for incoming ticks from a channel (tickChan)
 
  `agg.Run(ctx, tickChan, candleChan)`
 
-The processTick method aggregates ticks into candlesticks and updates the open, high, low, close, and volume fields of a Candle struct based on incoming tick data. This is essential for generating candlestick charts used in technical analysis.
+The `processTick` method aggregates ticks into candlesticks and updates the `open`, `high`, `low`, `close`, and `volume` fields of a Candle struct based on incoming tick data.
 
 Also I check for candlesticks that have reached their end time and marks them as finalised. Finalised candlesticks are sent to an output channel (candleChan) and removed from the active map. This ensures that only active candlesticks are updated with new tick data. I also handle graceful shortdown to ensure that all remaining candlesticks are finalized and sent out before the service stops.
 
 ### Data Streaming
 
-The streaming service is built on gRPC technology, implementing a server-side streaming pattern defined in the candlestick.proto file. This architecture enables efficient one-to-many communication where a single client request initiates a continuous flow of candlestick data from the server. 
+The streaming service is built on gRPC technology, implementing a server-side streaming pattern defined in the `candlestick.proto` file. This architecture enables efficient one-to-many communication where a single client request initiates a continuous flow of candlestick data from the server. 
 
-At the core of the implementation is the StreamCandlesticks method which processes client symbol requests and establishes persistent data channels. The service employs a continuous monitoring approach, checking for new candlestick data at one-second intervals for each requested symbol. When new data becomes available, it's transformed from internal Candle objects into standardized protobuf Candlestick messages with normalized time representations (Unix milliseconds) to ensure cross-platform compatibility. The system implements context-aware monitoring to gracefully handle client disconnections and prevent resource leaks.
+At the core of the implementation is the `StreamCandlesticks` method which processes client symbol requests and establishes persistent data channels. The service employs a continuous monitoring approach, checking for new candlestick data at one-second intervals for each requested symbol. When new data becomes available, it's transformed from internal Candle objects into standardized protobuf Candlestick messages with normalized time representations (Unix milliseconds) to ensure cross-platform compatibility. The system implements context-aware monitoring to gracefully handle client disconnections and prevent resource leaks.
 
 ##  Data Design
 
-The section will explain the data model and other data structure that were employed for this project
+The section will explain the data model and other data structures that I employed for this project
 
 ### Tick Data
 This represents individual trade events from the market with a symbol (trading pair), price, quantity, and timestamp. It maps the raw market data in the form of ticks from Binance:
