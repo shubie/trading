@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trading
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: trading
+  template:
+    metadata:
+      labels:
+        app: trading
+    spec:
+      containers:
+        - name: trading
+          image: trading:local
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
+            - containerPort: 50057
+          volumeMounts:
+            - name: config-volume
+              mountPath: /app/configs/config.yaml
+              subPath: config.yaml
+      volumes:
+        - name: config-volume
+          configMap:
+            name: app-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: trading
+spec:
+  selector:
+    app: trading
+  ports:
+    - name: http
+      port: 8080
+      nodePort: 30080
+    - name: grpc
+      port: 50057
+      nodePort: 30057
+  type: LoadBalancer

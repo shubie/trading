@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+data:
+  config.yaml: |
+    binance:
+      wss_url: wss://stream.binance.com:9443/ws
+      symbols: [BTCUSDT, ETHUSDT, PEPEUSDT]
+    grpc:
+      port: 50057
+    storage:
+      postgres:
+        dsn: postgres://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@postgres:5432/$(POSTGRES_DB)?sslmode=disable
+    buffers:
+      tick_chan: 1000
+      candle_chan: 500
+    health:
+      data_timeout: 5m
+      port: 8080

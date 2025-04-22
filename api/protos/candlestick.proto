@@ -1,0 +1,41 @@
+syntax = "proto3";
+package candlestick;
+
+option go_package = "api/protos/candlestick;candlestick";
+
+service CandlestickService {
+  rpc StreamCandlesticks(StreamRequest) returns (stream Candlestick);
+}
+
+service HealthCheckService {
+  rpc Health(HealthRequest) returns (HealthResponse);
+}
+
+message StreamRequest {
+  repeated string symbols = 1;
+}
+
+message Candlestick {
+  string symbol = 1;
+  double open = 2;
+  double high = 3;
+  double low = 4;
+  double close = 5;
+  double volume = 6;
+  int64 start_time = 7;
+  int64 end_time = 8;
+  bool is_final = 9;
+}
+
+message HealthRequest {}
+
+message HealthResponse {
+  enum Status {
+    UNKNOWN = 0;
+    HEALTHY = 1;
+    UNHEALTHY = 2;
+  }
+  Status status = 1;
+  string message = 2;
+  int64 last_data_ms = 3;
+}

@@ -1,0 +1,69 @@
+# Go specific
+/bin/
+/pkg/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+go.work
+
+# IDE specific
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# Dependencies
+/vendor/
+/go.sum
+
+# Terraform 
+.terraform/
+*.tfstate
+*.tfstate.backup
+*.tfstate.lock.info
+*.tfvars
+.terragrunt-cache/
+plan.out
+
+# Kubernetes
+kubeconfig
+*.kubeconfig
+
+# Logs
+*.log
+logs/
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Build artifacts
+/dist/
+/build/
+
+# Docker
+.docker/
+
+# Application specific
+tmp/
+temp/
+
+# Database files
+*.db
+dump.rdb
+
+# Kubernetes generated files
+kubeconfig
+*.kubeconfig
+
+# Docker volumes
+postgres_data/
+
+# Dependency directories
+vendor/
