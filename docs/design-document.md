@@ -8,7 +8,7 @@ The service is containerised and deployed on a Kubernetes cluster, with all infr
 
 ##  Trade offs, Decisions and  Assumptions
 
-I had made some assumptions and tradeoff to implement this soloution. This include the choices of tools and architecture to emply. Software architecture are largely about trade off and context, The decision on which architecture to choose depends on business drivers, the environment, and other factors
+I had made some assumptions and tradeoff to implement this soloution. This include the choices of tools and architecture to emply. Software architecture is largely about trade off and context; the decision on which architecture to choose depends on business drivers, the environment, and other factors
 
 #### 1. Using Minikube for Kurbanetes  
 
@@ -22,10 +22,10 @@ I opted for Timescale DB due to its specialized optimization for high-frequency 
 
 ##  Architecture Diagram
 
-###  Architecture Without a Message Queue (Direct Processing)
+###  Architecture Without a message brooker (Direct Processing)
 ![Architecture Diagram](/docs/images/architecture.svg "Architecture Diagram")
 
-###  For Future Architecture improvements Message Queue e.g Kafka 
+###  For future improvements using message brooker e.g Kafka 
 ![Architecture Diagram](/docs/images/architecture2.svg "Architecture Diagram")
 
 ##  Data Ingestion, Aggregation, and Streaming
