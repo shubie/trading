@@ -149,7 +149,7 @@ This implementation uses several standard Kubernetes resources:
 
  - **Services** :
       -  Service for the trading application exposing HTTP (8080) and gRPC (50057) ports
-      - Service for the postgres database
+      - Service for the TimescaleDB database
 
  - **ConfigMap** :
       -  app-config containing application configuration in YAML format
@@ -160,8 +160,8 @@ This implementation uses several standard Kubernetes resources:
       - Ensures data persistence across pod restarts
       
  - **Ingress** 
-      - HTTP ingress for web traffic on trading.local
-      - gRPC-specific ingress on grpc.trading.local with appropriate annotations for gRPC protoco
+      - HTTP ingress for web traffic on `trading.local`
+      - gRPC-specific ingress on `grpc.trading.local` with appropriate annotations for gRPC protoco
 
 
 ### Deployment Strategy
@@ -185,6 +185,10 @@ For this implementation I focussed on the following:
    - separate deployments for application and database
    - Established clear service boundaries
 
-Given time constraints and the requirements, this is a foundation architecture with proper separation of concerns between the application and database components.
 
-While this is fine for a start, to scale in production I will consider the following improvements: multiple replicas for high availability, resource limits and requests, horizontal pod autoscaling, network policies for enhanced security and secrets for sensitive configuration
+## **Future Improvements**
+Given the limited time constraints and requirements, this is my approach and act as a foundation architecture with proper separation of concerns between the application and database components.
+
+While this is fine for a start, to scale in production, I will consider the following improvements: multiple replicas for high availability, resource limits and requests, horizontal pod autoscaling, network policies for enhanced security and secrets for sensitive configuration
+
+Furthermore, I will add support for Prometheus metrics and Grafana dashboards. Switch to eevt driven architecture using Kafka  and Kafka streaming for ingestion to support high-throughput data pipelines.
