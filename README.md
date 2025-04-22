@@ -281,6 +281,13 @@ kubectl  apply  -f  deployments/k8s/app-deployment.yaml
 
 ```
 
+3. Deploy the ingres
+
+```bash
+
+kubectl  delete  -f  deployments/k8s/ingress.yaml
+
+
 4. Verify all components are running:
 
 ```bash
@@ -333,6 +340,7 @@ kubectl  delete  -f  deployments/k8s/postgres-deployment.yaml
 
 kubectl  delete  -f  deployments/k8s/app-config.yaml
 
+kubectl  delete  -f  deployments/k8s/ingress.yaml
 ```
 
 

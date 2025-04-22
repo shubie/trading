@@ -23,13 +23,13 @@ I opted for Timescale DB due to its specialized optimization for high-frequency 
 ##  Architecture Diagram
 
 ###  Architecture Without a Message Queue (Direct Processing)
-![Architecture Diagram](docs/images/architecture.svg "Architecture Diagram")
+![Architecture Diagram](/docs/images/architecture.svg "Architecture Diagram")
 
 ###  For Future Architecture improvements Message Queue e.g Kafka 
-![Architecture Diagram](docs/images/architecture2.svg "Architecture Diagram")
+![Architecture Diagram](/docs/images/architecture2.svg "Architecture Diagram")
 
 ##  Data Ingestion, Aggregation, and Streaming
-![Diagram](docs/images/data-ingestions.svg "Data Ingestion, Aggregation, and Streaming")
+![Diagram](/docs/images/data-ingestions.svg "Data Ingestion, Aggregation, and Streaming")
 
 ###  Data Ingestion
 
